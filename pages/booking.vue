@@ -138,7 +138,7 @@ export default {
         Totail: this.Totail,
       }
       db.collection('Oders')
-        .doc('order', 'asc')
+        .doc()
         .set(data)
         .then(function () {
           console.log('Document successfully written! -> MyForm')
