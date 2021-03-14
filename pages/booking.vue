@@ -123,19 +123,37 @@ export default {
       // valid: true,
       nameRules: [(v) => !!v || 'please required'],
       data: [],
+      age: '',
+      sum: 0,
+      set: '',
     }
+  },
+  computed: {
+    day() {
+      const DateStart = new Date(this.DateStart)
+      const DeteEnd = new Date(this.DeteEnd)
+      const age = Math.abs(Math.floor(DeteEnd - DateStart))
+      console.log('ppppppppppppppppppppppppppp')
+      return age
+    },
+    totalPrice() {
+      return this.Totail.reduce((a, b) => a.DateEnd - b.DateStart, 0)
+    },
   },
   // mounted() {
   //   this.getdata()
   // },
   methods: {
+    // allowedDates: (val) => parseInt(val.split('-')[2], 10) % 2 === 0,
     addData() {
       // เก็บข้อมูล Form ใน collection MyForm ( มี 1 document แต่จะ update ข้อมูลเรื่อย ๆ )
       const data = {
         DateStart: this.DateStart,
         DateEnd: this.DateEnd,
         Slip: this.Slip,
+        age: this.age,
         Totail: this.Totail,
+        day: this.day,
       }
       db.collection('Oders')
         .doc()
@@ -147,6 +165,23 @@ export default {
           console.error('Error writing document: ', error)
         })
     },
+    getdata() {
+      db.collection('Employee')
+        .orderBy('mail', 'asc')
+        .onSnapshot((querySnapshot) => {
+          const data = []
+          querySnapshot.forEach((doc) => {
+            data.push(doc.data())
+          })
+          this.list = data
+          console.log(this.list)
+        })
+    },
   },
+  // set() {
+  //   const day = Math.abs(this.DateStart, this.DateEnd)
+  //   this.sum = day
+  //   console.log('DAY ' + this.day)
+  // },
 }
 </script>
